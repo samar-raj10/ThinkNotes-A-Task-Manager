@@ -1,0 +1,91 @@
+import axios from "axios";
+import { ArrowLeftIcon } from "lucide-react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import {Link, useNavigate} from "react-router";
+
+const CreatePage = () => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setdueDate] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if(!title.trim() || !description.trim() || !dueDate){
+      toast.error("All fields are required");
+      return
+    }
+
+    setLoading(true);
+
+    try {
+      await axios.post("http://localhost:5001/api/notes", {title,description, dueDate})
+      toast.success("Task created successfully");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      if(error.response.status === 429){
+        toast.error("You have to slow down for a while!" , {
+          duration: 8000,
+          icon: "🤚"
+        })
+      }
+      else{
+        toast.error("Task cannot be created!Try again Later");
+      }
+      
+    }
+    finally{
+      setLoading(false);
+    }
+  };
+  return (
+    <div className="min-h-screen bg-base-200">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          <Link to={"/"} className="btn btn-ghost mb-6">
+            <ArrowLeftIcon className="size-5"/>
+            Back to HomePage
+          </Link>
+          <div className="card bg-base-100">
+            <div className="card-body">
+              <h2 className="card-title text-2xl mb-4">Create New Task</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="form-control mb-4">
+                  <label className="label">
+                    <span className="label-text">Title</span>
+                  </label>
+                  <input type="text" placeholder="Enter title" className="input input-bordered" value={title} onChange={(e) => setTitle(e.target.value)}/>
+                </div>
+
+                <div className="form-control mb-4">
+                  <label className="label">
+                    <span className="label-text">Description</span>
+                  </label>
+                  <textarea className="textarea textarea-bordered h-32" placeholder="Write your task here" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                </div>
+
+                <div className="form-control mb-4">
+                  <label className="label">
+                    <span className="label-text">Due Date</span>
+                  </label>
+                  <input type="date" className="input input-bordered" value={dueDate} onChange={(e) => setdueDate(e.target.value)}/>
+                </div>
+                <div className="card-actions justify-end">
+                  <button type="submit" className="btn btn-primary" disabled={loading}>
+                    Create Task
+                  </button>
+                </div>              
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CreatePage;
