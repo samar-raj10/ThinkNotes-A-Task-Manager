@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar.jsx'
-import RateLimitUI from '../components/RateLimitUI.jsx';
+import RateLimitUI from '../components/RateLImitUI.jsx';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import NoteCard from '../components/NoteCard.jsx';
