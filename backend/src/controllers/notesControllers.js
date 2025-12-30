@@ -3,7 +3,7 @@ import Note from "../Models/Note.js";
 
 export async function getAllnotes(req, res) {
   try {
-    const notes = await Note.find().sort({createdAt : -1}); //gives the newest Note first
+    const notes = await Note.find().sort({isCompleted : 1}); //gives the newest Note first
     res.status(200).json(notes);
   } catch (error) {
     console.error(error);
@@ -13,7 +13,7 @@ export async function getAllnotes(req, res) {
 
 export async function getNoteById(req,res){
   try {
-    const note = Note.findById(req.params.id);
+    const note = await Note.findById(req.params.id);
 
     if(!note) return res.status(404).json({message:"Note not found"});
     res.status(200).json(note)
@@ -38,7 +38,7 @@ export async function createnotes(req, res) {
 
 export async function updatenotes(req, res){
   try {
-    const {title,description} = req.body;
+    const {title,description, dueDate} = req.body;
     const updatedNote = await Note.findByIdAndUpdate(req.params.id,
       {title,description, dueDate},
       {

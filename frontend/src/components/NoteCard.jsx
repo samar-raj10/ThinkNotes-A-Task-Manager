@@ -30,9 +30,9 @@ const NoteCard = ({ note, setNotes}) => {
         <div className="card-body bg-base-200">
             <h3 className="card-title text-base-content font-mono tracking-tight">{note.title}</h3>
             <p className="text-base-content/70 line-clamp-3 block">{note.description}</p>
-            <span className="text-sm text-base-content/70 font-bold">Due Date : {formatDate(note.dueDate)}</span>
+            <span className="text-sm text-base-content/70 font-bold">Status : {note.isCompleted ? "Completed" : "Pending"}</span>
             <div className="card-actions justify-between items-center mt-4">
-                <span className="text-sm text-base-content/60">{formatDate(note.createdAt)}</span>
+                <span className="text-sm text-base-content/60">Due Date : {formatDate(note.dueDate)}</span>
                 <div className="flex items-center gap-1">
                     <PenSquareIcon className="size-4"/>
                     <button className="btn btn-ghost btn-xs text-error" onClick={(e) => handleDelete(e,note._id)}>
