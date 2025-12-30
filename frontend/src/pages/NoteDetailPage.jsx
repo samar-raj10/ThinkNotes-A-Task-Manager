@@ -129,7 +129,7 @@ const NoteDetailPage = () => {
                 />
               </div>
               <div className="card-actions justify-between">
-                <button className="btn btn-primary" onClick={handleStatus}>Mark as done</button>
+                <button className="btn btn-primary" onClick={handleStatus} disabled={note.isCompleted}>Mark as done</button>
                 <button
                   className="btn btn-primary"
                   disabled={saving}
